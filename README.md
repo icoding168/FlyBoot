@@ -14,4 +14,4 @@
 * 富文本编辑器：CKEditor 5
 
 ## 注意事项
-启动项目前，要先把 mysqldb.com 这个域名设置到 hosts 文件中，域名指向 mysql 服务器所在 IP 地址。
+启动项目前，要先把 jdbc 链接中的 mysqldb.com 域名改成实际的 MySQL 服务器 IP 地址。
