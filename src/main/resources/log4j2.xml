@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug">
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %p [thread id:%T] %C (%F:%L) - %M %n%m%n%n" />
+        </Console>
+
+        <RollingFile name="RollingFile"
+                     fileName="../logs/flyboot.log"
+                     filePattern="../logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+
+            <PatternLayout>
+                <Pattern>%d %p [thread id:%T] %C (%F:%L) - %M %n%m%n%n</Pattern>
+            </PatternLayout>
+
+
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+
+        </RollingFile>
+
+        <Async name="ASYNC">
+            <AppenderRef ref="RollingFile"/>
+        </Async>
+    </Appenders>
+
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="ASYNC"/>
+            <AppenderRef ref="CONSOLE"/>
+        </Root>
+        <Logger name="xyz.icoding168.flyboot" level="debug"></Logger>
+    </Loggers>
+
+
+</Configuration>

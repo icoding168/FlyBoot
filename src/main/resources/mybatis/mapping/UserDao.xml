@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.icoding168.flyboot.dao.UserDao">
+
+    <sql id="baseSql">
+      select
+        <choose>
+            <when test="sqlContext == 'count'">
+                count(*)
+            </when>
+            <otherwise>
+                user_id userId,
+                username
+            </otherwise>
+        </choose>
+      from user
+      where 1=1
+    </sql>
+
+    <select id="count" resultType="java.lang.Integer">
+        <bind name="sqlContext" value="'count'"/>
+        <include refid="baseSql"/>
+    </select>
+
+    <select id="find" resultType="xyz.icoding168.flyboot.model.User">
+        <include refid="baseSql"/>
+    </select>
+
+
+</mapper>

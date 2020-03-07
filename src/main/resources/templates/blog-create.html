@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	<link type="text/css" href="css/sample.css" rel="stylesheet" media="screen" />
+	<script
+  src="js/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+	<title>发布博客</title>
+	<style>
+.ck-editor__editable_inline {
+    min-height: 720px !important;
+}
+   </style>
+</head>
+<body>
+
+<header>
+	<div class="centered">
+		<h1>Blog Create</h1>
+
+		<input type="checkbox" id="menu-toggle" />
+		<label for="menu-toggle"></label>
+		  
+		<nav>
+			<ul>
+				<li><a href="blog-list.html">Blog List</a></li>
+			</ul>
+		</nav>
+	</div>
+</header>
+
+<main>
+
+	<div class="centered">
+		标题：<input type="text" id="title" value="${blog.title!}" style="width:720px"/>
+	</div>
+
+	<div class="centered" style="margin-top: 20px">
+
+		<div id="editor">
+			
+		</div>
+
+
+		<button id="save">保存</button>
+		<button id="publish">发布</button>
+	</div>
+
+
+</main>
+
+
+<script src="/js/ckeditor.js"></script>
+
+<script>
+
+	$(function(){
+    	ClassicEditor
+			.create( document.querySelector( '#editor' ), {
+				// toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+				ckfinder: {
+           uploadUrl: "http://localhost:28080/storage/upload"
+       }
+			} )
+			.then( editor => {
+				window.editor = editor;
+        		editor.setData( '${blog.content!}' );
+			} )
+			.catch( err => {
+				console.error( err.stack );
+			} );
+
+    	function callApi(data){
+            $.ajax({
+                url: 'http://127.0.0.1:28080/blog/save',
+                method:'post',
+                contentType:'application/json',
+                data:JSON.stringify(data)
+            }).done(function(response) {
+                if(response.code == 2000){
+                    window.open('blog-list.html','_self');
+                }else{
+                    alert('操作失败');
+                }
+            });
+		}
+
+
+		$('#save').on('click',function(){
+			const editorData = editor.getData();
+
+			var data = {blogId:'${blog.blogId!}',title:$('#title').val(),content:editorData};
+
+			var state = '${blog.state!}';
+			if(!state){
+			    state = 0;
+			}
+			data.state = state;
+			callApi(data);
+		});
+
+		$('#publish').on('click',function(){
+            const editorData = editor.getData();
+
+            var data = {blogId:'${blog.blogId!}',title:$('#title').val(),content:editorData};
+            data.state = 1;
+            callApi(data);
+		});
+
+        setInterval(function(){
+			$('.image').find('img').css('width','50%').css('height','50%');
+
+		}, 500);
+
+	});
+	
+</script>
+
+</body>
+</html>

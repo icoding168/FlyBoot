@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	<link type="text/css" href="css/sample.css" rel="stylesheet" media="screen" />
+	<script
+  src="js/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+	<title>博客列表</title>
+	<style>
+.ck-editor__editable_inline {
+    min-height: 500px !important;
+}
+   </style>
+</head>
+<body>
+
+<header>
+	<div class="centered">
+		<h1>Blog List</h1>
+
+		<input type="checkbox" id="menu-toggle" />
+		<label for="menu-toggle"></label>
+		  
+		<nav>
+			<ul>
+				<li><a href="blog-create.html">Blog Create</a></li>
+			</ul>
+		</nav>
+	</div>
+</header>
+
+<main>
+
+	<div class="centered">
+		<table>
+			<tr>
+				<th>标题</th>
+				<th>状态</th>
+				<th>创建时间</th>
+				<th>更新时间</th>
+				<th>操作</th>
+			</tr>
+
+			<#list body.list as item>
+			<tr>
+				<td>${item.title}</td>
+				<td>
+					<#if item.state == 0>
+						草稿
+					<#else>
+						发布
+				    </#if>
+				</td>
+				<td>${item.createTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+				<td>${item.updateTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+				<td>
+					<a href="blog-create.html?blogId=${item.blogId}">编辑</a>
+					<#if item.state == 0>
+					<a href="javascript:;" data-id="${item.blogId}" class="stateBtn" data-state="1">发布</a>
+					<#else>
+					<a href="javascript:;" data-id="${item.blogId}" class="stateBtn" data-state="0">草稿</a>
+					</#if>
+					<a href="javascript:;" data-id="${item.blogId}" class="stateBtn" data-state="2">删除</a>
+				</td>
+
+			</tr>
+			</#list>
+
+
+
+		</table>
+
+
+
+	</div>
+
+
+</main>
+
+
+
+<script>
+
+	$(function(){
+
+        function callApi(data){
+            $.ajax({
+                url: 'http://127.0.0.1:28080/blog/updateState',
+                method:'post',
+                contentType:'application/json',
+                data:JSON.stringify(data)
+            }).done(function(response) {
+                if(response.code == 2000){
+                    window.open('blog-list.html','_self');
+                }else{
+                    alert('操作失败');
+                }
+            });
+        }
+
+    	$('.stateBtn').on('click',function(){
+		    var blogId = $(this).data('id');
+		    var state = $(this).data('state');
+
+		    var data = {};
+		    data.blogId = blogId;
+		    data.state = state;
+
+		    callApi(data);
+		});
+	});
+	
+</script>
+
+</body>
+</html>

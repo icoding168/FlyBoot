@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.icoding168.flyboot.dao.BlogDao">
+
+    <sql id="baseSql">
+      select
+        <choose>
+            <when test="sqlContext == 'count'">
+                count(*)
+            </when>
+            <otherwise>
+                blog_id blogId,
+                title,
+                state,
+                create_time createTime,
+                update_time updateTime
+            </otherwise>
+        </choose>
+      from blog
+      where state != 2
+    </sql>
+
+    <select id="count" resultType="java.lang.Integer">
+        <bind name="sqlContext" value="'count'"/>
+        <include refid="baseSql"/>
+    </select>
+
+    <select id="find" resultType="xyz.icoding168.flyboot.model.Blog">
+        <include refid="baseSql"/>
+        order by sort asc,create_time desc
+    </select>
+
+    <insert id="create" parameterType="xyz.icoding168.flyboot.model.Blog">
+        insert into blog(blog_id,title,content,create_time,update_time,sort,state)
+        values (#{blogId},#{title},#{content},#{createTime},#{updateTime},#{sort},#{state})
+    </insert>
+
+    <update id="update" parameterType="xyz.icoding168.flyboot.model.Blog">
+        update blog set title=#{title},content=#{content},update_time=#{updateTime},state=#{state} where blog_id=#{blogId}
+    </update>
+
+    <select id="findByBlogId" resultType="xyz.icoding168.flyboot.model.Blog">
+        select
+            blog_id blogId,
+            title,
+            state,
+            create_time createTime,
+            update_time updateTime,
+            content,
+            state
+        from blog where blog_id=#{blogId}
+    </select>
+
+</mapper>
