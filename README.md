@@ -7,7 +7,7 @@
 
 代码质量也很不错，简单明了可读性高，因为其中融入了我自身的编程经验。  
 
-## 技术选型
+## 代码依赖
 * Web 框架： SpringBoot 2.2.1.RELEASE
 * Orm 框架： MyBatis 3.0
 * 模板类库： FreeMarker
