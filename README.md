@@ -18,7 +18,4 @@
 ## 注意事项
 启动项目前，要先把 jdbc 链接中的 mysqldb.com 域名改成实际的 MySQL 服务器 IP 地址。
 
-## 爱心捐赠
-如果这个项目对你有帮助的话，也可以打赏一杯咖啡给我哦 🤪
 
-<img src="http://www.icoding168.xyz/wp-content/uploads/2020/03/WechatIMG1.jpeg" width="50%" height="50%">
