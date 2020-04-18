@@ -73,11 +73,12 @@ public abstract class PaginationResponseBuilder<T> implements Serializable {
         paginationResponse.setTotalRecord(totalRecord);
 
         int totalPage = totalRecord / pageSize;
-        paginationResponse.setTotalPage(totalPage);
 
         if (totalRecord % pageSize != 0) {
-            paginationResponse.setTotalPage(totalPage + 1);
+            totalPage = totalPage + 1;
         }
+
+        paginationResponse.setTotalPage(totalPage);
 
         if(page < totalPage){
             paginationResponse.setHasNext(true);
@@ -87,7 +88,16 @@ public abstract class PaginationResponseBuilder<T> implements Serializable {
             paginationResponse.setNextPage(page + 1);
         }
 
+        if(page > 1){
+            paginationResponse.setPrevPage(page - 1);
+            paginationResponse.setHasPrev(true);
+        }
+
         return paginationResponse;
+    }
+
+    public static void main(String[] args){
+        System.out.println(85 / 10);
     }
 
 }

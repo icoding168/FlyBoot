@@ -11,7 +11,10 @@ public class PaginationResponse<T> implements Serializable {
     private Integer totalPage = 0;
     private Integer totalRecord = 0;
 
+    private Integer prevPage = 0;
     private Integer nextPage = 0;
+
+    private Boolean hasPrev = false;
     private Boolean hasNext =  false;
 
     private List<T> list = null;
@@ -56,12 +59,28 @@ public class PaginationResponse<T> implements Serializable {
         this.totalRecord = totalRecord;
     }
 
+    public Integer getPrevPage() {
+        return prevPage;
+    }
+
+    public void setPrevPage(Integer prevPage) {
+        this.prevPage = prevPage;
+    }
+
     public Integer getNextPage() {
         return nextPage;
     }
 
     public void setNextPage(Integer nextPage) {
         this.nextPage = nextPage;
+    }
+
+    public Boolean getHasPrev() {
+        return hasPrev;
+    }
+
+    public void setHasPrev(Boolean hasPrev) {
+        this.hasPrev = hasPrev;
     }
 
     public Boolean getHasNext() {
